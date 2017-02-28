@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_group_id_0"
+            android:title="All"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_group_id_1"
+            android:title="Red" />
+        <item
+            android:id="@+id/nav_group_id_2"
+            android:title="Pink" />
+        <item
+            android:id="@+id/nav_group_id_3"
+            android:title="Purple" />
+        <item
+            android:id="@+id/nav_group_id_4"
+            android:title="Deep Purple" />
+        <item
+            android:id="@+id/nav_group_id_5"
+            android:title="Indigo" />
+        <item
+            android:id="@+id/nav_group_id_6"
+            android:title="Blue" />
+        <item
+            android:id="@+id/nav_group_id_7"
+            android:title="Light Blue" />
+        <item
+            android:id="@+id/nav_group_id_8"
+            android:title="Cyan" />
+        <item
+            android:id="@+id/nav_group_id_9"
+            android:title="Teal" />
+        <item
+            android:id="@+id/nav_group_id_10"
+            android:title="Green" />
+        <item
+            android:id="@+id/nav_group_id_11"
+            android:title="Light Green" />
+        <item
+            android:id="@+id/nav_group_id_12"
+            android:title="Lime" />
+        <item
+            android:id="@+id/nav_group_id_13"
+            android:title="Yellow" />
+        <item
+            android:id="@+id/nav_group_id_14"
+            android:title="Amber" />
+        <item
+            android:id="@+id/nav_group_id_15"
+            android:title="Orange" />
+        <item
+            android:id="@+id/nav_group_id_16"
+            android:title="Deep Orange" />
+        <item
+            android:id="@+id/nav_group_id_17"
+            android:title="Brown" />
+        <item
+            android:id="@+id/nav_group_id_18"
+            android:title="Grey" />
+        <item
+            android:id="@+id/nav_group_id_19"
+            android:title="Blue Grey" />
+    </group>
+</menu>

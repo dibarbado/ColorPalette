@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Color Palette</string>
+    <string name="drawer_layout_open">Drawer Layout Open</string>
+    <string name="drawer_layout_close">Drawer Layout Close</string>
+</resources>
