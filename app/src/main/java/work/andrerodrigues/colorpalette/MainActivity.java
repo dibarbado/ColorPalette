@@ -1,10 +1,9 @@
 package work.andrerodrigues.colorpalette;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,9 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -51,12 +49,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean isLoading;
 
     public static String GROUP_NAME = "";
+    public static List<Group> groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList("LIST");
+            adapter = new ItemBaseAdapter(list);
+        } else {
+            list = new ArrayList<Item>();
+            adapter = new ItemBaseAdapter(list);
+            // load items
+            progress = ProgressDialog.show(this, "Carregando", "aguarde", true);
+            updateItemList(Util.GET_ITEM_URL(), false, false);
+        }
+        setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
@@ -68,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        list = new ArrayList<Item>();
-        adapter = new ItemBaseAdapter(list);
         recyclerView.setAdapter(adapter);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,19 +91,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // load items
-        requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-        progress = ProgressDialog.show(this, "Carregando", "aguarde", true);
-        updateItemList(Util.GET_ITEM_URL(), false, false);
+        Menu menu = navigationView.getMenu();
+        menu.add(0, 0, 0, "All").setChecked(true);
+        for (Group group : groups) {
+            menu.add(0, group.getId(), group.getId(), group.getName());
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("LIST", (ArrayList<? extends Parcelable>) list);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int group_id = item.getItemId();
+
         drawerLayout.closeDrawer(GravityCompat.START);
-
-        String tag = getResources().getResourceEntryName(item.getItemId());
-        int group_id = Integer.parseInt(tag.substring(13));
-
         progress = ProgressDialog.show(this, "Carregando", "aguarde", true);
         // All items
         if (group_id == 0) {

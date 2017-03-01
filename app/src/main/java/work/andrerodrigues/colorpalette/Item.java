@@ -1,10 +1,13 @@
 package work.andrerodrigues.colorpalette;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Andre on 26/02/2017.
  */
 
-public class Item {
+public class Item implements Parcelable{
 
     private int id;
     private int group_id;
@@ -25,6 +28,27 @@ public class Item {
         this.created = created;
         this.modified = modified;
     }
+
+    protected Item(Parcel in) {
+        id = in.readInt();
+        group_id = in.readInt();
+        index = in.readString();
+        hex = in.readString();
+        created = in.readString();
+        modified = in.readString();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -72,5 +96,20 @@ public class Item {
 
     public void setModified(String modified) {
         this.modified = modified;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(group_id);
+        dest.writeString(index);
+        dest.writeString(hex);
+        dest.writeString(created);
+        dest.writeString(modified);
     }
 }
