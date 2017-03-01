@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressDialog progress;
     private boolean isLoading;
 
-    public static String GROUP_NAME = "";
-    public static List<Group> groups;
+    public static String GROUP_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Menu menu = navigationView.getMenu();
-        menu.add(0, 0, 0, "All").setChecked(true);
-        for (Group group : groups) {
-            menu.add(0, group.getId(), group.getId(), group.getName());
-        }
+
     }
 
     @Override
@@ -111,16 +106,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int group_id = item.getItemId();
-
         drawerLayout.closeDrawer(GravityCompat.START);
+
+        String tag = getResources().getResourceEntryName(item.getItemId());
+        int group_id = Integer.parseInt(tag.substring(13));
+        GROUP_NAME = (String) item.getTitle();
+
         progress = ProgressDialog.show(this, "Carregando", "aguarde", true);
         // All items
         if (group_id == 0) {
             updateItemList(Util.GET_ITEM_URL(), true, false);
-        // Specific group
+            // Specific group
         } else {
-            GROUP_NAME = (String) item.getTitle();
             updateItemList(Util.GET_ITEM_URL(group_id), true, true);
         }
         return true;

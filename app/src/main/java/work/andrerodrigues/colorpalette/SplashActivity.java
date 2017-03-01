@@ -21,52 +21,12 @@ import java.util.Arrays;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private RequestQueue requestQueue;
-    private JsonObjectRequest jsonObjectRequest;
-    private Context context = this;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, Util.GET_GROUP_URL(), null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("groups");
-                            Gson gson = new Gson();
-                            Group[] groups = gson.fromJson(jsonArray.toString(), Group[].class);
-                            MainActivity.groups = new ArrayList<Group>();
-                            MainActivity.groups.addAll(Arrays.asList(groups));
-
-                            Intent intent = new Intent(context, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-        jsonObjectRequest.setTag(Util.GROUP_TAG);
-
-        requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (requestQueue != null) {
-            requestQueue.cancelAll(Util.GROUP_TAG);
-        }
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
